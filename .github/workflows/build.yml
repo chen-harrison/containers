@@ -12,9 +12,6 @@ on:
     # Midnight on Sundays
     - cron: '0 0 * * 0'
 
-env:
-  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
 defaults:
   run:
     shell: bash
@@ -28,6 +25,8 @@ jobs:
       SOURCE_IMAGE: 'osrf/ros:jazzy-desktop-full'
       OUTPUT_IMAGE: 'ghcr.io/chen-harrison/ros:jazzy'
     steps:
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
       - name: Checkout repo
         uses: actions/checkout@v4
       - name: Check Docker installation
