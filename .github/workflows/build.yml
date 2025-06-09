@@ -1,0 +1,38 @@
+name: Build Docker Image
+# run-name: 
+
+on:
+  push:
+    branches:
+      - 'main'
+    # paths:
+    #   - 'Dockerfile'
+    #   - 'build.sh'
+  schedule:
+    # Midnight on Sundays
+    - cron: '0 0 * * 0'
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+defaults:
+  run:
+    shell: bash
+    working-directory: .
+
+jobs:
+  build_jazzy:
+    name: Build ROS Jazzy
+    runs-on: ubuntu-latest
+    env:
+      SOURCE_IMAGE: 'osrf/ros:jazzy-desktop-full'
+      OUTPUT_IMAGE: 'ghcr.io/chen-harrison/ros:jazzy'
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Check Docker installation
+        run: docker --version
+      - name: Run build script
+        run: ./build.sh $SOURCE_IMAGE $OUTPUT_IMAGE
+      - name: Push image to container registry
+        run: docker push $OUTPUT_IMAGE
