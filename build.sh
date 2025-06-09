@@ -20,6 +20,7 @@ USER_GID=1000
 USERNAME=$(docker run --rm -u "$USER_UID" "$BASE_IMAGE" whoami 2> /dev/null) || USERNAME="user"
 
 docker build \
+    --pull \
     --build-arg BASE_IMAGE=$BASE_IMAGE \
     --build-arg USERNAME=$USERNAME \
     --build-arg USER_UID=$USER_UID \
