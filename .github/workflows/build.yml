@@ -1,4 +1,4 @@
-name: Build Docker Image
+name: Build Docker Images
 # run-name: 
 
 on:
@@ -18,20 +18,11 @@ defaults:
     working-directory: .
 
 jobs:
-  build_jazzy:
+  build_ros_jazzy:
     name: Build ROS Jazzy
-    runs-on: ubuntu-latest
-    env:
-      SOURCE_IMAGE: 'osrf/ros:jazzy-desktop-full'
-      OUTPUT_IMAGE: 'ghcr.io/chen-harrison/ros:jazzy'
-    steps:
-      - name: Log in to GitHub Container Registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-      - name: Checkout repo
-        uses: actions/checkout@v4
-      - name: Check Docker installation
-        run: docker --version
-      - name: Run build script
-        run: ./build.sh $SOURCE_IMAGE $OUTPUT_IMAGE
-      - name: Push image to container registry
-        run: docker push $OUTPUT_IMAGE
+    uses: ./.github/workflows/reusable-build_docker.yml
+    with:
+      source_image: 'osrf/ros:jazzy-desktop-full'
+      output_image: 'ghcr.io/chen-harrison/ros:jazzy'
+      runs-on: ubuntu-24.04
+    secrets: inherit

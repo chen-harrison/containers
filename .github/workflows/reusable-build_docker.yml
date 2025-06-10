@@ -1,0 +1,33 @@
+name: Build Docker Image
+
+on:
+  workflow_call:
+    inputs:
+      source_image:
+        description: 'Docker image name and tag used as the base image for the build'
+        required: true
+        type: string
+      output_image:
+        description: 'Docker image name and tag of the output, to be pushed to the container registry'
+        required: true
+        type: string
+      runs-on:
+        description: 'Type of runner to use'
+        required: true
+        type: string
+
+jobs:
+  build_docker_image:
+    name: Build Docker Image
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Check Docker installation
+        run: docker --version
+      - name: Run build script
+        run: ./build.sh ${{ inputs.source_image }} ${{ inputs.output_image }}
+      - name: Push image to container registry
+        run: docker push ${{ inputs.output_image }}
