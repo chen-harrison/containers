@@ -26,3 +26,11 @@ jobs:
       output_image: 'ghcr.io/chen-harrison/ros:jazzy'
       runs-on: ubuntu-24.04
     secrets: inherit
+  build_ros_rolling:
+    name: Build ROS Rolling
+    uses: ./.github/workflows/reusable-build_docker.yml
+    with:
+      source_image: 'osrf/ros:rolling-desktop-full'
+      output_image: 'ghcr.io/chen-harrison/ros:rolling'
+      runs-on: ubuntu-24.04
+    secrets: inherit
