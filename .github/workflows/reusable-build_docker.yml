@@ -3,7 +3,7 @@ name: Build Docker Image
 on:
   workflow_call:
     inputs:
-      source_image:
+      base_image:
         description: 'Docker image name and tag used as the base image for the build'
         required: true
         type: string
@@ -28,6 +28,6 @@ jobs:
       - name: Check Docker installation
         run: docker --version
       - name: Run build script
-        run: ./build.sh ${{ inputs.source_image }} ${{ inputs.output_image }}
+        run: ./build_ci.sh ${{ inputs.base_image }} ${{ inputs.output_image }}
       - name: Push image to container registry
         run: docker push ${{ inputs.output_image }}

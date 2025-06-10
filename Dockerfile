@@ -57,12 +57,6 @@ RUN git clone https://github.com/jarun/nnn.git \
     && make strip install O_NERD=1 \
     && cd .. && rm -rf nnn
 
-# # fasd
-# RUN wget -O fasd.zip https://github.com/clvv/fasd/archive/refs/tags/1.0.1.zip \
-#     && unzip fasd.zip \
-#     && cd fasd-1.0.1 && make install && cd .. \
-#     && rm -r fasd.zip fasd-1.0.1
-    
 # Make non-root user the default
 USER $USER_UID
 WORKDIR /home/$USERNAME
