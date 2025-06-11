@@ -1,18 +1,6 @@
 #!/usr/bin/env bash
 
-check_help() {
-    if [[ $# -eq 1 && ($1 == "-h" || $1 == "--help") ]] ; then
-        return
-    fi
-    return 1
-}
-
-if [[ $# -ne 2 ]] || check_help "$@" ; then
-    echo "Usage: $(basename "$0") BASE_IMAGE[:TAG] OUTPUT_IMAGE[:TAG]"
-    echo "Build a dev container."
-    exit 0
-fi
-
+# Default to UID = 1000, username = user
 BASE_IMAGE=$1
 OUTPUT_IMAGE=$2
 USER_UID=1000

@@ -13,6 +13,7 @@ if [[ $# -eq 0  || $# -gt 2 ]] || check_help "$@" ; then
     exit 0
 fi
 
+# Use the UID and username of the current user
 BASE_IMAGE=$1
 OUTPUT_IMAGE=${2:-local:latest}
 USER_UID=$(id -u)
