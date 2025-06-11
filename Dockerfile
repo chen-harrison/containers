@@ -71,5 +71,9 @@ RUN git clone https://github.com/jarun/nnn.git \
 USER $USER_UID
 WORKDIR /home/$USERNAME
 
+# fzf
+RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf \
+    && ~/.fzf/install --key-bindings --completion --update-rc
+
 CMD ["bash"]
 ENTRYPOINT ["/ros_entrypoint.sh"]
