@@ -39,12 +39,8 @@ RUN wget https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Ubuntu
     && unzip UbuntuMono.zip -d UbuntuMono \
     && mkdir -p /usr/share/fonts/truetype \
     && mv UbuntuMono /usr/share/fonts/truetype \
-    && wget https://github.com/ryanoasis/nerd-fonts/releases/latest/download/DroidSansMono.zip \
-    && unzip DroidSansMono.zip -d DroidSansMono \
-    && mkdir -p /usr/share/fonts/opentype \
-    && mv DroidSansMono /usr/share/fonts/opentype \
     && fc-cache -f \
-    && rm UbuntuMono.zip DroidSansMono.zip
+    && rm UbuntuMono.zip
 
 # clangd
 RUN clangd_url=$(curl -s https://api.github.com/repos/clangd/clangd/releases/latest | jq -r '.assets[].browser_download_url' | grep 'clangd-linux') \
