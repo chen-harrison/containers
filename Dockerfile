@@ -47,7 +47,9 @@ RUN clangd_url=$(curl -s https://api.github.com/repos/clangd/clangd/releases/lat
     && clangd_version=$(curl -s "https://api.github.com/repos/clangd/clangd/releases/latest" | jq -r '.tag_name') \
     && wget -O clangd.zip $clangd_url \
     && unzip clangd.zip \
-    && cp clangd_$clangd_version/bin/clangd /usr/bin \
+    && cp clangd_$clangd_version/bin/clangd /usr/local/bin \
+    && cp -r clangd_$clangd_version/lib/clang /usr/local/lib \
+    && ln -sf /usr/local/bin/clangd /usr/bin/clangd \
     && rm -r clangd.zip clangd_$clangd_version
 
 # fd
