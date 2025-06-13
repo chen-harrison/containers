@@ -70,7 +70,7 @@ RUN git clone https://github.com/jarun/nnn.git \
     && cd .. && rm -rf nnn \
     && rm -rf /var/lib/apt/lists/*
 
-# lazygit
+# Lazygit
 RUN lazygit_version=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*') \
     && curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${lazygit_version}/lazygit_${lazygit_version}_Linux_x86_64.tar.gz" \
     && tar xf lazygit.tar.gz -C /usr/local/bin lazygit \

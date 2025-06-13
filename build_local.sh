@@ -25,7 +25,6 @@ docker build \
     --build-arg USERNAME=$USERNAME \
     --build-arg USER_UID=$USER_UID \
     --build-arg USER_GID=$USER_GID \
-    --no-cache \
     -f "$(dirname $0)/Dockerfile" \
     -t "${OUTPUT_IMAGE}" \
     "$(dirname $0)"
