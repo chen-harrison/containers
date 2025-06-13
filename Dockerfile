@@ -7,6 +7,8 @@ SHELL ["/bin/bash", "-c"]
 ENV SHELL=/bin/bash
 # User colors in terminal
 ENV TERM=xterm-256color
+# Override VS Code as git editor
+ENV GIT_EDITOR=nano
 
 # Capture the --build-args or use default values
 ARG USERNAME=user
@@ -27,15 +29,18 @@ RUN if ! id -u "$USER_UID" &>/dev/null; then \
 RUN apt-get update && apt-get install -y --no-install-recommends \
     bash-completion \
     curl \
+    fontconfig \
     git \
+    grep \
     jq \
+    nano \
     wget \
     sudo \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
 # Nerd Fonts
-RUN wget https://github.com/ryanoasis/nerd-fonts/releases/latest/download/UbuntuMono.zip \
+RUN wget --no-check-certificate https://github.com/ryanoasis/nerd-fonts/releases/latest/download/UbuntuMono.zip \
     && unzip UbuntuMono.zip -d UbuntuMono \
     && mkdir -p /usr/share/fonts/truetype \
     && mv UbuntuMono /usr/share/fonts/truetype \
@@ -45,7 +50,7 @@ RUN wget https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Ubuntu
 # clangd
 RUN clangd_url=$(curl -s https://api.github.com/repos/clangd/clangd/releases/latest | jq -r '.assets[].browser_download_url' | grep 'clangd-linux') \
     && clangd_version=$(curl -s "https://api.github.com/repos/clangd/clangd/releases/latest" | jq -r '.tag_name') \
-    && wget -O clangd.zip $clangd_url \
+    && wget --no-check-certificate -O clangd.zip $clangd_url \
     && unzip clangd.zip \
     && cp clangd_$clangd_version/bin/clangd /usr/local/bin \
     && cp -r clangd_$clangd_version/lib/clang /usr/local/lib \
@@ -64,6 +69,12 @@ RUN git clone https://github.com/jarun/nnn.git \
     && make strip install O_NERD=1 \
     && cd .. && rm -rf nnn \
     && rm -rf /var/lib/apt/lists/*
+
+# lazygit
+RUN lazygit_version=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*') \
+    && curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${lazygit_version}/lazygit_${lazygit_version}_Linux_x86_64.tar.gz" \
+    && tar xf lazygit.tar.gz -C /usr/local/bin lazygit \
+    && rm lazygit.tar.gz
 
 # Make non-root user the default
 USER $USER_UID
