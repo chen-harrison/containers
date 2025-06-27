@@ -9,6 +9,8 @@ ENV SHELL=/bin/bash
 ENV TERM=xterm-256color
 # Override VS Code as git editor
 ENV GIT_EDITOR=nano
+# Set locale
+ENV LANG=${LANG:-C.UTF-8}
 
 # Capture the --build-args or use default values
 ARG USERNAME=user
@@ -33,6 +35,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     grep \
     jq \
+    locales \
     nano \
     wget \
     sudo \
