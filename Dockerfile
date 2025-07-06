@@ -31,14 +31,12 @@ RUN if ! id -u "$USER_UID" &>/dev/null; then \
 RUN apt-get update && apt-get install -y --no-install-recommends \
     bash-completion \
     curl \
-    fontconfig \
     git \
     grep \
     jq \
     locales \
     nano \
     wget \
-    sudo \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
@@ -47,7 +45,6 @@ RUN wget --no-check-certificate https://github.com/ryanoasis/nerd-fonts/releases
     && unzip UbuntuMono.zip -d UbuntuMono \
     && mkdir -p /usr/share/fonts/truetype \
     && mv UbuntuMono /usr/share/fonts/truetype \
-    && fc-cache -f \
     && rm UbuntuMono.zip
 
 # clangd
