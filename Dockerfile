@@ -84,4 +84,7 @@ WORKDIR /home/$USERNAME
 RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf \
     && ~/.fzf/install --key-bindings --completion --update-rc
 
+# Prevent "To run command as administrator..." welcome message
+RUN touch ~/.hushlogin
+
 CMD ["bash"]
