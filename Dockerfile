@@ -41,7 +41,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Nerd Fonts
-RUN wget --no-check-certificate https://github.com/ryanoasis/nerd-fonts/releases/latest/download/UbuntuMono.zip \
+RUN wget --quiet --no-check-certificate -O UbuntuMono.zip https://github.com/ryanoasis/nerd-fonts/releases/latest/download/UbuntuMono.zip \
     && unzip UbuntuMono.zip -d UbuntuMono \
     && mkdir -p /usr/share/fonts/truetype \
     && mv UbuntuMono /usr/share/fonts/truetype \
@@ -50,7 +50,7 @@ RUN wget --no-check-certificate https://github.com/ryanoasis/nerd-fonts/releases
 # clangd
 RUN clangd_url=$(curl -s https://api.github.com/repos/clangd/clangd/releases/latest | jq -r '.assets[].browser_download_url' | grep 'clangd-linux') \
     && clangd_version=$(curl -s "https://api.github.com/repos/clangd/clangd/releases/latest" | jq -r '.tag_name') \
-    && wget --no-check-certificate -O clangd.zip $clangd_url \
+    && wget --quiet --no-check-certificate -O clangd.zip $clangd_url \
     && unzip clangd.zip \
     && cp clangd_$clangd_version/bin/clangd /usr/local/bin \
     && cp -r clangd_$clangd_version/lib/clang /usr/local/lib \
