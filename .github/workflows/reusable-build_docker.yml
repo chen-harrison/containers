@@ -1,18 +1,18 @@
-name: Build Docker Image
+name: '[Reusable] Build Docker Image'
 
 on:
   workflow_call:
     inputs:
       base_image:
-        description: 'Docker image name and tag used as the base image for the build'
+        description: Docker image name and tag used as the base image for the build
         required: true
         type: string
       output_image:
-        description: 'Docker image name and tag of the output, to be pushed to the container registry'
+        description: Docker image name and tag of the output, to be pushed to the container registry
         required: true
         type: string
       runs-on:
-        description: 'Type of runner to use'
+        description: Type of runner to use
         required: true
         type: string
 
