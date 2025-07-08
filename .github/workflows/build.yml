@@ -6,7 +6,9 @@ on:
     branches:
       - main
     paths:
+      - .github/workflows/*
       - Dockerfile
+      - build_ci.sh
   schedule:
     # Midnight on Sundays
     - cron: '0 0 * * 0'
