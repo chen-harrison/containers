@@ -18,7 +18,7 @@ BASE_IMAGE=$1
 OUTPUT_IMAGE=${2:-local:latest}
 USER_UID=$(id -u)
 USER_GID=$(id -g)
-USERNAME=$(docker run --rm -u "$USER_UID" "$BASE_IMAGE" whoami 2> /dev/null) || USERNAME=$(whoami)
+USERNAME=$(docker run --rm --entrypoint bash -u "$USER_UID" "$BASE_IMAGE" -c "whoami 2> /dev/null") || USERNAME="user"
 
 docker build \
     --build-arg BASE_IMAGE=$BASE_IMAGE \

@@ -5,7 +5,7 @@ BASE_IMAGE=$1
 OUTPUT_IMAGE=$2
 USER_UID=1000
 USER_GID=1000
-USERNAME=$(docker run --rm -u "$USER_UID" "$BASE_IMAGE" whoami 2> /dev/null) || USERNAME="user"
+USERNAME=$(docker run --rm --entrypoint bash -u "$USER_UID" "$BASE_IMAGE" -c "whoami 2> /dev/null") || USERNAME="user"
 
 docker build \
     --build-arg BASE_IMAGE=$BASE_IMAGE \
