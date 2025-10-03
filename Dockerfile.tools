@@ -1,0 +1,59 @@
+FROM ubuntu:latest
+
+# Essential packages
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+        git \
+        grep \
+        jq \
+        wget \
+        unzip \
+        pkg-config \
+        libncursesw5-dev \
+        libreadline-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /root
+
+# Nerd Fonts (/usr/share/fonts/truetype/UbuntuMono)
+RUN wget --quiet --no-check-certificate -O UbuntuMono.zip https://github.com/ryanoasis/nerd-fonts/releases/latest/download/UbuntuMono.zip \
+    && unzip -q UbuntuMono.zip -d UbuntuMono \
+    && mkdir -p /usr/share/fonts/truetype \
+    && mv UbuntuMono /usr/share/fonts/truetype \
+    && rm UbuntuMono.zip
+
+# fd (/usr/bin/fd)
+RUN fd_url=$(curl -s https://api.github.com/repos/sharkdp/fd/releases/latest | jq -r '.assets[].browser_download_url' | grep -e fd_.*amd64.deb) \
+    && wget --quiet --no-check-certificate -O fd.deb $fd_url \
+    && dpkg -i fd.deb \
+    && rm fd.deb
+
+RUN git clone --depth 1 https://github.com/junegunn/fzf.git .fzf \
+    && ./.fzf/install --key-bindings --completion --update-rc \
+    && sed -i 's/\/root/$HOME/g' .fzf.bash
+
+# nnn (/usr/local/bin/nnn)
+RUN nnn_url=$(curl -s https://api.github.com/repos/jarun/nnn/releases/latest | jq -r '.assets[].browser_download_url' | grep nerd-static) \
+    && wget --quiet --no-check-certificate -O nnn.tar.gz $nnn_url \
+    && tar -xzf nnn.tar.gz \
+    && mv nnn-nerd-static /usr/local/bin/nnn \
+    # && chown $(id -u):$(id -g) /usr/local/bin/nnn \
+    && rm nnn.tar.gz
+
+# Lazygit (/usr/local/bin/lazygit)
+RUN lazygit_version=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*') \
+    && curl -Lso lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${lazygit_version}/lazygit_${lazygit_version}_Linux_x86_64.tar.gz" \
+    && tar -xf lazygit.tar.gz -C /usr/local/bin lazygit \
+    && rm lazygit.tar.gz
+
+# clangd (/usr/local/lib/clang + /usr/local/bin/clangd w/ symlink to /usr/bin/clangd)
+RUN clangd_url=$(curl -s https://api.github.com/repos/clangd/clangd/releases/latest | jq -r '.assets[].browser_download_url' | grep 'clangd-linux') \
+    && clangd_version=$(curl -s "https://api.github.com/repos/clangd/clangd/releases/latest" | jq -r '.tag_name') \
+    && wget --quiet --no-check-certificate -O clangd.zip $clangd_url \
+    && unzip -q clangd.zip \
+    && cp clangd_$clangd_version/bin/clangd /usr/local/bin \
+    && cp -r clangd_$clangd_version/lib/clang /usr/local/lib \
+    && rm -r clangd.zip clangd_$clangd_version

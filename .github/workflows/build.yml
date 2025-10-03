@@ -8,7 +8,7 @@ on:
     paths:
       - .github/workflows/*
       - Dockerfile
-      - build_ci.sh
+      - build.sh
   schedule:
     # Midnight on Sundays
     - cron: '0 0 * * 0'
