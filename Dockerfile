@@ -21,6 +21,7 @@ ARG USER_GID=$USER_UID
 # Essential packages
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        bash-completion \
         git \
         locales \
         nano \
