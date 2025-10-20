@@ -31,11 +31,6 @@ else
     USERNAME=$(docker run --rm --entrypoint bash -u "$USER_UID" "$BASE_IMAGE" -c "whoami 2> /dev/null") || USERNAME=$(whoami)
 fi
 
-echo $BASE_IMAGE
-echo $OUTPUT_IMAGE
-echo $USER_UID
-echo $USER_GID
-
 docker build \
     --build-arg BASE_IMAGE=$BASE_IMAGE \
     --build-arg USERNAME=$USERNAME \
