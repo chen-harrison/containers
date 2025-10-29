@@ -1,4 +1,4 @@
-name: Build Tools Docker Image
+name: Build Tools
 
 on:
   push:
