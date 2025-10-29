@@ -1,0 +1,26 @@
+name: Build Tools Docker Image
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/build_tools.yml
+      - Dockerfile.tools
+
+defaults:
+  run:
+    shell: bash
+    working-directory: .
+
+jobs:
+  build_tools:
+    name: Build Tools
+    runs-on: ubuntu-24.04
+    env:
+      IMAGE_NAME: ghcr.io/chen-harrison/tools
+    steps:
+      - name: Run build
+        run: docker build --pull -f Dockerfile.tools -t ${IMAGE_NAME} .
+      - name: Push image to container registry
+        run: docker push -q ${IMAGE_NAME}
