@@ -20,6 +20,10 @@ jobs:
     env:
       IMAGE_NAME: ghcr.io/chen-harrison/tools
     steps:
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Checkout repo
+        uses: actions/checkout@v4
       - name: Run build
         run: docker build --pull -f Dockerfile.tools -t ${IMAGE_NAME} .
       - name: Push image to container registry
