@@ -9,8 +9,6 @@ on:
       - .github/workflows/reusable-build_docker.yml
       - Dockerfile
       - build.sh
-  workflow_run:
-    workflows: ["Build Tools"]
   schedule:
     # Midnight on Sundays
     - cron: '0 0 * * 0'

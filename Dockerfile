@@ -1,5 +1,4 @@
 ARG BASE_IMAGE
-FROM ghcr.io/chen-harrison/tools AS tools
 FROM $BASE_IMAGE
 
 # Use bash instead of sh for RUN commands
@@ -39,22 +38,6 @@ RUN if ! id -u "$USER_UID" &>/dev/null; then \
 # Make non-root user the default
 USER $USER_UID
 WORKDIR /home/$USERNAME
-
-# Nerd Fonts
-COPY --from=tools /usr/share/fonts/truetype/UbuntuMono /usr/share/fonts/truetype/UbuntuMono
-# fd
-COPY --from=tools /usr/bin/fd /usr/bin/fd
-# fzf
-COPY --from=tools /root/.fzf.bash ./.fzf.bash
-COPY --from=tools /root/.fzf ./.fzf
-# nnn
-COPY --from=tools /usr/local/bin/nnn /usr/local/bin/nnn
-# Lazygit
-COPY --from=tools /usr/local/bin/lazygit /usr/local/bin/lazygit
-# clangd
-COPY --from=tools /usr/local/bin/clangd /usr/local/bin/clangd
-COPY --from=tools /usr/local/lib/clang /usr/local/lib/clang
-RUN sudo ln -sf /usr/local/bin/clangd /usr/bin/clangd
 
 # Prevent "To run command as administrator..." welcome message
 RUN touch ~/.hushlogin
