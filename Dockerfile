@@ -10,7 +10,7 @@ ENV TERM=xterm-256color
 # Override VS Code as git editor
 ENV GIT_EDITOR=nano
 # Set locale
-ENV LANG=${LANG:-C.UTF-8}
+ENV LANG=C.UTF-8
 
 # Capture the --build-args or use default values
 ARG USERNAME
