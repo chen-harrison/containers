@@ -19,20 +19,12 @@ defaults:
     working-directory: .
 
 jobs:
-  build_ros_jazzy:
+  build_ros_lyrical:
     name: Build ROS Jazzy
     uses: ./.github/workflows/reusable-build_docker.yml
     with:
-      base_image: osrf/ros:jazzy-desktop-full
-      output_image: ghcr.io/chen-harrison/ros:jazzy
-      runs-on: ubuntu-24.04
-    secrets: inherit
-  build_ros_kilted:
-    name: Build ROS Kilted
-    uses: ./.github/workflows/reusable-build_docker.yml
-    with:
-      base_image: osrf/ros:kilted-desktop-full
-      output_image: ghcr.io/chen-harrison/ros:kilted
+      base_image: osrf/ros:lyrical-desktop-full
+      output_image: ghcr.io/chen-harrison/ros:lyrical
       runs-on: ubuntu-24.04
     secrets: inherit
   build_ros_rolling:
